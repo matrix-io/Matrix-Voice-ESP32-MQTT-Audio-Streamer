@@ -137,8 +137,8 @@ bool audioOK = true;
 bool wifi_connected = false;
 bool hotword_detected = false;
 bool isUpdateInProgess =  false;
-//Change to your own password hash at https://www.md5hashgenerator.com/
-const char* passwordhash = "4b8d34978fafde81a85a1b91a09a881b";
+//You can change to your own password hash at https://www.md5hashgenerator.com/
+const char* passwordhash = "b95677216e439d96ec4fba1240a3c1f8"; //"voice" hashed as default password
 const char* host = "matrixvoice";
 std::string finishedMsg = "";
 int message_count;
