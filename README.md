@@ -73,6 +73,10 @@ Reset the ESP32 flash memory.
 esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash            
 ```
 
+## Personal Computer and Arduino IDE Set Up
+
+Follow the Personal Computer Setup & Installing Arduino IDE sections of [this guide](https://www.hackster.io/matrix-labs/program-over-the-air-on-esp32-matrix-voice-5e76bb#toc-personal-computer-setup-3) to set up the Espressif environment on your personal computer and configure your Arduino IDE for ESP32 programming.
+
 ## 2. Editing the Audio Streamer Code
 
 Clone the Audio Streamer repository and enter into the relevant folder.
@@ -82,9 +86,19 @@ git clone https://github.com/Romkabouter/Matrix-Voice-ESP32-MQTT-Audio-Streamer
 cd Matrix-Voice-ESP32-MQTT-Audio-Streamer-master/MatrixVoiceAudioServer  
 ```
 
+First, download the following libraries and move them to the Arduino/libraries folder. These libraries are used by the MatrixVoiceAudioServer.ino file.
+
+- Matrix-Hal-ESP32 https://github.com/matrix-io/matrixio_hal_esp32
+- AsynchMqttClient https://github.com/marvinroger/async-mqtt-client
+- AsyncTCP https://github.com/me-no-dev/AsyncTCP
+- PubSubClient https://github.com/knolleary/pubsubclient. (Change the MQTT_MAX_PACKET_SIZE in PubSubClient.h to 2000)
+- ArduinoJSON https://github.com/bblanchon/ArduinoJson
+
 The MatrixVoiceAudioServer.ino file is the program that is going to run on the MATRIX Voice standalone. It will communicate with the Snips audio server on the Raspberry Pi and send data from the mics through MQTT. This way, the MATRIX Voice can run separate from the Pi and still serve as the input mics and you can place multiple MATRIX Voice satellite modules wherever you want as long as they share a WiFi connection with the Raspberry Pi server.
 
-Within the same directory as the MatrixVoiceAudioServer.ino, there will be a config.h file. In this file, change
+Open the MatrixVoiceAudioServer.ino file in the Arduino IDE.
+
+Within the same directory as the MatrixVoiceAudioServer.ino, there will be a config.h file. This should open up in the Arduino IDE automatically as well. Change its contents according to the following guidelines.
 
 - SSID to your WiFi's SSID
 - PASSWORD to your WiFi's Password
@@ -101,21 +115,14 @@ Additionally, in the MatrixVoiceAudioServer.ino file, change
 
 ![Screenshot of ino file](ino_file.png)
 
-Feel free to edit or add on to the code. We're always happy to see new contributions! You can open this folder in either Visual Studio Code PlatformIO (by following this guide here) or through the Arduino IDE (by following this guide here).
-To edit the program, download the following libraries and put them in the Arduino/libraries folder (for Arduino IDE)
+Feel free to edit or add on to the code. We're always happy to see new contributions! 
 
-- Matrix-Hal-ESP32 https://github.com/matrix-io/matrixio_hal_esp32
-- AsynchMqttClient https://github.com/marvinroger/async-mqtt-client
-- AsyncTCP https://github.com/me-no-dev/AsyncTCP
-- PubSubClient https://github.com/knolleary/pubsubclient. (Change the MQTT_MAX_PACKET_SIZE in PubSubClient.h to 2000)
-- ArduinoJSON https://github.com/bblanchon/ArduinoJson
+## 3. Compiling & Uploading the Code 
 
-## 3. Uploading and Compiling the Code 
-
-The repository has the firmware bin files and deploy file in the same directory as the MatrixVoiceAudioServer.ino file, so to upload the default code, connect your Voice to the Pi and run the command below. Remember to change the IP in deploy.sh to your PI's IP.
+The repository has the firmware bin files and deploy file in the same directory as the MatrixVoiceAudioServer.ino file, so to upload the default code, connect your MATRIX Voice to the Pi and run the command below. Remember to change the IP in deploy.sh to your PI's IP.
 
 ```
 sh deploy.sh   
 ```
 
-When making changes to the code, first compile the file to binary (through either pio run or the arduino sketch->'compile to binary'), and run either deploy.sh or ./install depending on the text editor you are using.
+When making changes to the code, first compile the file to binary (Go to the Arduino IDE, then select "Sketch"->"Export Compiled Binary").
