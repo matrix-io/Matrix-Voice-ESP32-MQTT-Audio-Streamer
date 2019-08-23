@@ -82,8 +82,10 @@ Follow the Personal Computer Setup & Installing Arduino IDE sections of [this gu
 Clone the Audio Streamer repository and enter into the relevant folder.
 
 ```
-git clone https://github.com/Romkabouter/Matrix-Voice-ESP32-MQTT-Audio-Streamer  
-cd Matrix-Voice-ESP32-MQTT-Audio-Streamer-arduino/MatrixVoiceAudioServer
+git clone https://github.com/matrix-io/Matrix-Voice-ESP32-MQTT-Audio-Streamer
+cd Matrix-Voice-ESP32-MQTT-Audio-Streamer
+git checkout arduino
+cd MatrixVoiceAudioServer
 ```
 
 First, download (git clone) the following libraries and move them to the `Arduino/libraries` folder. These libraries are used by the MatrixVoiceAudioServer.ino file.
