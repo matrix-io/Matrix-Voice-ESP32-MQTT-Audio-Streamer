@@ -73,11 +73,11 @@ Reset the ESP32 flash memory.
 esptool.py --chip esp32 --port /dev/ttyS0 --baud 115200 --before default_reset --after hard_reset erase_flash            
 ```
 
-## Personal Computer and Arduino IDE Set Up
+## 2. Personal Computer and Arduino IDE Set Up
 
 Follow the Personal Computer Setup & Installing Arduino IDE sections of [this guide](https://www.hackster.io/matrix-labs/program-over-the-air-on-esp32-matrix-voice-5e76bb#toc-personal-computer-setup-3) to set up the Espressif environment on your personal computer and configure your Arduino IDE for ESP32 programming.
 
-## 2. Editing the Audio Streamer Code
+## 3. Editing the Audio Streamer Code
 
 Clone the Audio Streamer repository and enter into the relevant folder.
 
@@ -86,9 +86,9 @@ git clone https://github.com/Romkabouter/Matrix-Voice-ESP32-MQTT-Audio-Streamer
 cd Matrix-Voice-ESP32-MQTT-Audio-Streamer-master/MatrixVoiceAudioServer  
 ```
 
-First, download the following libraries and move them to the Arduino/libraries folder. These libraries are used by the MatrixVoiceAudioServer.ino file.
+First, download (git clone) the following libraries and move them to the `Arduino/libraries` folder. These libraries are used by the MatrixVoiceAudioServer.ino file.
 
-- Matrix-Hal-ESP32 https://github.com/matrix-io/matrixio_hal_esp32
+- Matrix-Hal-ESP32 https://github.com/matrix-io/matrixio_hal_esp32 (copy over `matrixio_hal_esp32/components/hal` folder to `Arduino/libraries`)
 - AsynchMqttClient https://github.com/marvinroger/async-mqtt-client
 - AsyncTCP https://github.com/me-no-dev/AsyncTCP
 - PubSubClient https://github.com/knolleary/pubsubclient. (Change the MQTT_MAX_PACKET_SIZE in PubSubClient.h to 2000)
@@ -115,14 +115,38 @@ Additionally, in the MatrixVoiceAudioServer.ino file, change
 
 ![Screenshot of ino file](ino_file.png)
 
+You can also change the OTA host and passwordhash. These will be used if you try to upload code over the air- Arduino will prompt you for a password which is "voice" by default.
+
+![Screenshot of ino file passwordhash](passwordhash.png)
+
 Feel free to edit or add on to the code. We're always happy to see new contributions! 
 
-## 3. Compiling & Uploading the Code 
+## 4. Compiling & Uploading the Code 
 
-The repository has the firmware bin files and deploy file in the same directory as the MatrixVoiceAudioServer.ino file, so to upload the default code, connect your MATRIX Voice to the Pi and run the command below. Remember to change the IP in deploy.sh to your PI's IP.
+After making changes to the code, first compile the file to binary (Go to the Arduino IDE, then select "Sketch"->"Export Compiled Binary"). This will create a file called MatrixVoiceAudioServer.ino.esp32.bin. This is the file that will be flashed and should be in the same directory as the deploy_ota.sh file.
+
+The repository has the firmware bin files and deploy_ota.sh file in the same directory, so to upload the default code, connect your MATRIX Voice to the Pi and run the command below. Remember to change the IP in deploy.sh to your PI's IP.
 
 ```
-sh deploy.sh   
+sh deploy_ota.sh   
 ```
 
-When making changes to the code, first compile the file to binary (Go to the Arduino IDE, then select "Sketch"->"Export Compiled Binary").
+You will be prompted to enter your Raspberry Pi's password. Once you enter it, you should see the message: "esptool.py wrapper for MATRIX Voice".
+
+Watch how it flashes and when it restarts, the LED ring should turn blue. This means it has successfully connected to your WiFi.
+  
+Remove the MATRIX Voice from the Pi and plug the power into the MATRIX Voice with a micro-USB cable, the MATRIX Voice should start.
+
+Close & restart the Arduino IDE. After about a minute, the Matrix Voice should show up as a network port ("Tools" -> "Port"). Select this port.
+
+![Arduino Port Image](arduino_port.png)
+
+You can make changes to your code, and as long as you have the MATRIX Voice OTA methods, you can click on "Sketch" -> "Upload", and the code will upload over WiFi to your MATRIX Voice ESP32.
+
+The first time you upload over the air, the Arduino IDE will prompt you for your password. This is "voice" by our default password hash.
+
+> Note: OTA works roughly half the time with this code since it is fairly heavy so we recommend flashing through the Pi when possible.
+
+## 5. Raspberry Pi Server Side Setup
+
+For the Raspberry Pi server side setup, follow the steps mentioned [here](https://www.hackster.io/matrix-labs/matrix-voice-satellites-streaming-audio-to-pi-server-63b9cd#toc-5a---raspberry--pi-server-setup--w--matrix-device-8).
