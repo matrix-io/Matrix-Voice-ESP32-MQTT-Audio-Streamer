@@ -83,7 +83,7 @@ Clone the Audio Streamer repository and enter into the relevant folder.
 
 ```
 git clone https://github.com/Romkabouter/Matrix-Voice-ESP32-MQTT-Audio-Streamer  
-cd Matrix-Voice-ESP32-MQTT-Audio-Streamer-master/MatrixVoiceAudioServer  
+cd Matrix-Voice-ESP32-MQTT-Audio-Streamer-arduino/MatrixVoiceAudioServer
 ```
 
 First, download (git clone) the following libraries and move them to the `Arduino/libraries` folder. These libraries are used by the MatrixVoiceAudioServer.ino file.
