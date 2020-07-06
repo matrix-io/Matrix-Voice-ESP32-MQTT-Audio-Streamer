@@ -1,12 +1,15 @@
 /* ************************************************************************* *
    Matrix Voice Audio Streamer
+
    This program is written to be a streaming audio server running on the Matrix
    Voice. This is typically used for Snips.AI or Rhasspy, it will then be able to replace the
    Snips Audio Server, by publishing small wave messages to the hermes protocol
    See https://snips.ai/ or https://rhasspy.readthedocs.io/en/latest/ for more information
+
    Author:  Paul Romkes
    Date:    November 2019
    Version: 4.5.1
+
    Changelog:
    ==========
    v1:
@@ -62,6 +65,7 @@
     - Add dynamic hotword brightness, post {"hotword_brightness": 50 } to SITEID/everloop
    v5.12.1:
     - Fixed a couple of defects regarding input mute and disconnects
+
 * ************************************************************************ */
 
 #include <Arduino.h>
