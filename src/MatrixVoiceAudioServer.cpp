@@ -234,7 +234,7 @@ std::string playBytesStreamingTopic = std::string("hermes/audioServer/") + SITEI
 std::string rhasspyWakeTopic = std::string("rhasspy/+/transition/+");
 std::string toggleOffTopic = "hermes/hotword/toggleOff";
 std::string toggleOnTopic = "hermes/hotword/toggleOn";
-std::string hotwordDetectedTopic = "hermes/hotword/default/detected";
+std::string hotwordDetectedTopic = "hermes/hotword/+/detected";
 std::string everloopTopic = SITEID + std::string("/everloop");
 std::string debugTopic = SITEID + std::string("/debug");
 std::string audioTopic = SITEID + std::string("/audio");
@@ -588,6 +588,18 @@ void onMqttMessage(char *topic, char *payload, AsyncMqttClientMessageProperties 
                 if (root.containsKey("debug")) {
                     DEBUG = (root["debug"] == "true") ? true : false;
                 }
+            }
+        }
+        else if(topicstr.find(rhasspyWakeTopic.c_str()) != std::string::npos){
+            std::string payloadstr(payload);
+            if(payloadstr.find("started") != std::string::npos ||
+               payloadstr.find("loaded") != std::string::npos) {
+                hotword_detected = true;
+                xEventGroupSetBits(everloopGroup, EVERLOOP); // Set the bit so the everloop gets updated
+            }
+            if(payloadstr.find("listening") != std::string::npos) {
+                hotword_detected = false;
+                xEventGroupSetBits(everloopGroup, EVERLOOP); // Set the bit so the everloop gets updated
             }
         }
     } else {
